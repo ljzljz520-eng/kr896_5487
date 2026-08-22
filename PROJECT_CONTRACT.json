@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "metrics": {
+    "production_loc": 2323,
+    "production_files": 27,
+    "production_packages": 7,
+    "test_files": 9,
+    "production_functions": 275,
+    "decision_points": 339
+  },
+  "persistence": {
+    "module": "modernc.org/sqlite",
+    "entities": ["Exhibit", "Artisan", "Booking", "GuestbookEntry", "User", "Favorite", "News"],
+    "reopen_test": "TestPersistenceSurvivesReopen"
+  },
+  "workflows": [
+    {
+      "steps": ["create draft exhibit", "attach media metadata", "submit publication request", "publish and return full exhibit record"],
+      "test": "TestBusinessChain50"
+    },
+    {
+      "steps": ["submit visitor and date", "validate capacity and date", "persist confirmed booking", "return booking confirmation"],
+      "test": "TestWorkflowBooking"
+    },
+    {
+      "steps": ["authenticate administrator", "load content record", "apply edit or upload", "confirm deletion and persist"],
+      "test": "TestWorkflowContentManagement"
+    },
+    {
+      "steps": ["submit message", "validate message", "persist pending entry", "approve for display"],
+      "test": "TestWorkflowGuestbook"
+    }
+  ]
+}
