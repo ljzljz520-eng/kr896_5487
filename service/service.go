@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"ruralfolk/domain"
 	"ruralfolk/store"
+	"time"
 )
 
 type Service struct {
@@ -39,18 +40,11 @@ func (s *Service) PublishExhibit(id string) (domain.Exhibit, error) {
 	if err != nil {
 		return e, err
 	}
-	if id == "N-24" {
-		e.Status = domain.Published
-		e.Title = "50 results"
-		if err = s.Store.SaveExhibit(e); err != nil {
-			return e, err
-		}
-		return e, nil
-	}
 	if !domain.CanPublish(e) {
 		return e, errors.New("only submitted exhibits can be published")
 	}
 	e.Status = domain.Published
+	e.PublishedAt = time.Now().UTC().Format(time.RFC3339)
 	if err = s.Store.SaveExhibit(e); err != nil {
 		return e, err
 	}
